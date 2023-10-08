@@ -90,6 +90,7 @@ jobs:
       - name: Generate map diff sample clips
         id: map-diff-samples
         run: |
+          ./scripts/folder_diff.sh
           mv sample_differences.md pr/
           mv samples-diff pr/
       - name: Save PR artifacts
