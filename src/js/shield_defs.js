@@ -509,7 +509,7 @@ export function loadShields() {
       textColor: Color.shields.brown,
       colorLighten: Color.shields.brown,
     },
-    ["HIST"],
+    ["XYZA"], //Change to be removed before merging
     Color.shields.brown
   );
 
