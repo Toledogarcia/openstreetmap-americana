@@ -40,7 +40,7 @@ jobs:
         id: main-samples
         run: |
           npm start & command_pid=$!
-          sleep 5
+          sleep 15
           npm run generate_samples
           kill $command_pid
           mv samples samples-main
@@ -64,7 +64,7 @@ jobs:
         id: pr-samples
         run: |
           npm start & command_pid=$!
-          sleep 5
+          sleep 15
           npm run generate_samples
           kill $command_pid
           mv samples samples-pr
