@@ -39,10 +39,10 @@ jobs:
       - name: Capture main branch sample clips
         id: main-samples
         run: |
-          npm start & command_pid=$!
-          sleep 15
+          npm start &
+          while ! nc -z localhost 1776; do sleep 1; done
           npm run generate_samples
-          kill $command_pid
+          kill $(lsof -t -i:1776) 2>/dev/null || echo "No process found listening on port 1776."
           mv samples samples-main
       - name: Checkout PR Branch 🛎️
         uses: actions/checkout@v3
@@ -63,10 +63,10 @@ jobs:
       - name: Capture PR branch sample clips
         id: pr-samples
         run: |
-          npm start & command_pid=$!
-          sleep 15
+          npm start &
+          while ! nc -z localhost 1776; do sleep 1; done
           npm run generate_samples
-          kill $command_pid
+          kill $(lsof -t -i:1776) 2>/dev/null || echo "No process found listening on port 1776."
           mv samples samples-pr
       - name: Upload Build artifact
         uses: actions/upload-artifact@v3
