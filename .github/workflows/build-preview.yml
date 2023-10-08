@@ -40,7 +40,7 @@ jobs:
         id: main-samples
         run: |
           npm start &
-          while ! nc -z localhost 1776; do sleep 1; done
+          until nc -z localhost 1776; do sleep 1; done
           npm run generate_samples
           kill $(lsof -t -i:1776) 2>/dev/null || echo "No process found listening on port 1776."
           mv samples samples-main
@@ -64,7 +64,7 @@ jobs:
         id: pr-samples
         run: |
           npm start &
-          while ! nc -z localhost 1776; do sleep 1; done
+          until nc -z localhost 1776; do sleep 1; done
           npm run generate_samples
           kill $(lsof -t -i:1776) 2>/dev/null || echo "No process found listening on port 1776."
           mv samples samples-pr
