@@ -33,7 +33,7 @@ for file in "$FOLDER1"/*.png; do
     fi
 done
 
-OUTPUT_MD="sample_differences.md"
+OUTPUT_MD="pr_preview-extra.md"
 
 # Start the table with headers
 echo "| Sample Name | Before | After |" > $OUTPUT_MD
