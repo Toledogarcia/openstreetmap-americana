@@ -77,11 +77,6 @@ jobs:
           mv samples ../samples-pr
           mv dist ..
         working-directory: pr-branch
-      - name: Upload Build artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: americana
-          path: dist/
       - name: Capture PR branch usage statistics
         id: pr-stats
         run: |
@@ -109,7 +104,12 @@ jobs:
           cat ../pr/pr_preview-extra.md
           mv samples-diff ../dist/
         working-directory: pr-branch
-      - name: Save PR artifacts
+      - name: Upload Build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: americana
+          path: dist/
+      - name: Save PR attributes
         env:
           PR_NUMBER: ${{ github.event.pull_request.number }}
           PR_SHA: ${{ github.event.pull_request.head.sha }}
