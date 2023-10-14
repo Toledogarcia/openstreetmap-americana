@@ -49,6 +49,7 @@ jobs:
           cp src/configs/config.aws.js src/config.js
           mkdir -p dist/shield-docs
           cp -r shieldlib/docs/* dist/shield-docs
+          mv dist ..
         working-directory: pr-branch
       - name: Capture main branch usage statistics
         id: main-stats
@@ -72,9 +73,7 @@ jobs:
         working-directory: pr-branch
       - name: Stop main branch map server
         id: main-stop-server
-        run: |
-          kill $(lsof -t -i:1776) 2>/dev/null || echo "No process found listening on port 1776."
-          mv samples ../samples-main
+        run: kill $(lsof -t -i:1776) 2>/dev/null || echo "No process found listening on port 1776."
         working-directory: main
       - name: Capture PR branch sample clips
         id: pr-samples
@@ -84,7 +83,6 @@ jobs:
           npm run generate_samples
           kill $(lsof -t -i:1776) 2>/dev/null || echo "No process found listening on port 1776."
           mv samples ../samples-pr
-          mv dist ..
         working-directory: pr-branch
       - name: Capture PR branch usage statistics
         id: pr-stats
