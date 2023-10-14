@@ -96,10 +96,7 @@ jobs:
       - name: Generate map diff sample clips
         id: map-diff-samples
         run: |
-          ls -l ../samples-main
-          ls -l ../samples-pr
           ./scripts/folder_diff.sh ../samples-main ../samples-pr https://preview.ourmap.us/pr/${{ github.event.pull_request.number }}/
-          ls -l samples-diff
           mv pr_preview-extra.md ../pr/
           cat ../pr/pr_preview-extra.md
           mv samples-diff ../dist/
