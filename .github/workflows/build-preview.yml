@@ -91,6 +91,9 @@ jobs:
         id: map-diff-samples
         run: |
           ./scripts/folder_diff.sh samples-main samples-pr
+          ls -l samples-main
+          ls -l samples-pr
+          ls -l samples-diff
           mv pr_preview-extra.md pr/
           cat pr/pr_preview-extra.md
           mv samples-diff dist/
