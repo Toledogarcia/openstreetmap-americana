@@ -2,14 +2,15 @@
 # Compare two folders of images and produce an .md file of differences
 
 # Check if the right number of arguments are passed
-if [ "$#" -ne 2 ]; then
-    echo "Usage: $0 <folder1> <folder2>"
+if [ "$#" -ne 3 ]; then
+    echo "Usage: $0 <folder1> <folder2> <url-base>"
     exit 1
 fi
 
 FOLDER1="$1"
 FOLDER2="$2"
 OUTPUT_FOLDER="samples-diff"
+URL_BASE="$3"
 
 # Create the output folder if it doesn't exist
 mkdir -p "$OUTPUT_FOLDER"
@@ -50,6 +51,6 @@ for before_file in "$OUTPUT_FOLDER"/*_before.png; do
     # Check if the after file exists
     if [ -e "$after_file" ]; then
         # Add an entry to the markdown table
-        echo "| $basefile | ![before]($before_file) | ![after]($after_file) |" >> $OUTPUT_MD
+        echo "| $basefile | ![before]($URL_BASE$before_file) | ![after]($URL_BASE$after_file) |" >> $OUTPUT_MD
     fi
 done
