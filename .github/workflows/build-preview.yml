@@ -44,6 +44,7 @@ jobs:
           npm run generate_samples
           kill $(lsof -t -i:1776) 2>/dev/null || echo "No process found listening on port 1776."
           mv samples samples-main
+          ls -l samples-main
       - name: Checkout PR Branch 🛎️
         uses: actions/checkout@v3
       - name: Use Node.js 18.16.1
@@ -90,9 +91,9 @@ jobs:
       - name: Generate map diff sample clips
         id: map-diff-samples
         run: |
-          ./scripts/folder_diff.sh samples-main samples-pr
           ls -l samples-main
           ls -l samples-pr
+          ./scripts/folder_diff.sh samples-main samples-pr
           ls -l samples-diff
           mv pr_preview-extra.md pr/
           cat pr/pr_preview-extra.md
