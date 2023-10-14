@@ -18,10 +18,15 @@ jobs:
   deploy-preview:
     runs-on: ubuntu-latest
     steps:
+      - name: Use Node.js 18.16.1
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.16.1 #18.17.0 is buggy
       - name: Checkout Main Branch 🛎️
         uses: actions/checkout@v3
         with:
           ref: main
+          path: main
       - name: Install and Build Main Branch 🔧
         run: |
           npm ci --include=dev
@@ -29,6 +34,7 @@ jobs:
           npm run style
           npm run shields
           cp src/configs/config.aws.js src/config.js
+        working-directory: main
       - name: Capture main branch usage statistics
         id: main-stats
         run: |
@@ -36,6 +42,7 @@ jobs:
           echo "MAIN_STATS<<EOF" >> $GITHUB_ENV
           echo -e "$MAIN_STATS" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
+        working-directory: main
       - name: Capture main branch sample clips
         id: main-samples
         run: |
@@ -43,17 +50,16 @@ jobs:
           until nc -z localhost 1776; do sleep 1; done
           npm run generate_samples
           kill $(lsof -t -i:1776) 2>/dev/null || echo "No process found listening on port 1776."
-          mv samples samples-main
-          ls -l samples-main
+          mv samples ../samples-main
+        working-directory: main
       - name: Checkout PR Branch 🛎️
         uses: actions/checkout@v3
-      - name: Use Node.js 18.16.1
-        uses: actions/setup-node@v3
         with:
-          node-version: 18.16.1 #18.17.0 is buggy
+          path: pr
       - name: Install and Build 🔧
         # TODO: when we move shieldlib to its own repo, move shieldlib docs CI also
         run: |
+          ls -l samples-main
           npm ci --include=dev
           npm run build
           npm run style
@@ -61,6 +67,7 @@ jobs:
           cp src/configs/config.aws.js src/config.js
           mkdir -p dist/shield-docs
           cp -r shieldlib/docs/* dist/shield-docs
+        working-directory: pr-branch
       - name: Capture PR branch sample clips
         id: pr-samples
         run: |
@@ -68,7 +75,9 @@ jobs:
           until nc -z localhost 1776; do sleep 1; done
           npm run generate_samples
           kill $(lsof -t -i:1776) 2>/dev/null || echo "No process found listening on port 1776."
-          mv samples samples-pr
+          mv samples ../samples-pr
+          mv dist ..
+        working-directory: pr-branch
       - name: Upload Build artifact
         uses: actions/upload-artifact@v3
         with:
@@ -81,6 +90,7 @@ jobs:
           echo "PR_STATS<<EOF" >> $GITHUB_ENV
           echo -e "$PR_STATS" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
+        working-directory: pr-branch
       - name: Compare Stats
         id: compare-stats
         run: |
@@ -95,9 +105,10 @@ jobs:
           ls -l samples-pr
           ./scripts/folder_diff.sh samples-main samples-pr
           ls -l samples-diff
-          mv pr_preview-extra.md pr/
-          cat pr/pr_preview-extra.md
-          mv samples-diff dist/
+          mv pr_preview-extra.md ../pr/
+          cat ../pr/pr_preview-extra.md
+          mv samples-diff ../dist/
+        working-directory: pr-branch
       - name: Save PR artifacts
         env:
           PR_NUMBER: ${{ github.event.pull_request.number }}
