@@ -37,7 +37,8 @@ done
 OUTPUT_MD="pr_preview-extra.md"
 
 # Start the table with headers
-echo "| Sample Name | Before | After |" > $OUTPUT_MD
+echo "## Map Changes" > $OUTPUT_MD
+echo "| Sample Name | Before | After |" >> $OUTPUT_MD
 echo "|-------------|--------|-------|" >> $OUTPUT_MD
 
 # Loop through *_before.png files in the output folder
