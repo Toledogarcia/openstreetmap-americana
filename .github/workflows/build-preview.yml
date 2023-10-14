@@ -91,8 +91,9 @@ jobs:
         id: map-diff-samples
         run: |
           ./scripts/folder_diff.sh samples-main samples-pr
-          mv sample_differences.md pr/
-          mv samples-diff pr/
+          mv pr_preview-extra.md pr/
+          cat pr/preview-extra.md
+          mv samples-diff dist/
       - name: Save PR artifacts
         env:
           PR_NUMBER: ${{ github.event.pull_request.number }}
