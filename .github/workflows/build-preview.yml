@@ -93,7 +93,7 @@ jobs:
       - name: Compare Stats
         id: compare-stats
         run: |
-          mkdir -p pr
+          mkdir -p ../pr
           echo '${{ env.MAIN_STATS }}'
           echo '${{ env.PR_STATS }}'
           npm exec ts-node scripts/stats_compare '${{ env.MAIN_STATS }}' '${{ env.PR_STATS }}' > ../pr/stats-difference.md
