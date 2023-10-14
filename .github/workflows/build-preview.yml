@@ -92,7 +92,7 @@ jobs:
         run: |
           ./scripts/folder_diff.sh samples-main samples-pr
           mv pr_preview-extra.md pr/
-          cat pr/preview-extra.md
+          cat pr/pr_preview-extra.md
           mv samples-diff dist/
       - name: Save PR artifacts
         env:
