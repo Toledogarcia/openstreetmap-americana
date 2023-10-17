@@ -378,6 +378,7 @@ A "point of interest" or POI is any feature on the map represented by an icon on
 
 ### Categories
 
+,
 POIs are broken down into the following broad categories, in order to constrain the number of colors shown on the map. Some features may not cleanly fit into one category or another. Contributors should consider other POIs in the category to determine which category is the best fit.
 
 - **Geographic Place Names**: labels associated with `place=` tags, for countries, cities, locations, etc.
@@ -405,3 +406,7 @@ For consistency, POI icons use the following color palette:
 ## Fonts
 
 Fonts for style labels are packaged and defined in [fontstack66](https://github.com/osm-americana/fontstack66), Americana's font package.
+
+## Render Samples
+
+A GitHub action will check a list of regression test locations to see if the map has changed. If any of those locations have changed visually, the "Map Preview" check will generate before and after images. If your PR changes the visual appearance of the map, add an entry to `test/sample_locations.json` with a location that best illustrates the change. This will help show your change to PR reviewers as well as act as a regression test for future PRs.
