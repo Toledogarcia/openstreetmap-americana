@@ -23,5 +23,13 @@
       "width": 400,
       "height": 400
     }
+  },
+  {
+    "location": "15/33.92208/-83.37654",
+    "name": "athens_ga_7_way_concurrency",
+    "viewport": {
+      "width": 400,
+      "height": 400
+    }
   }
 ]
