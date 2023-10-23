@@ -378,7 +378,6 @@ A "point of interest" or POI is any feature on the map represented by an icon on
 
 ### Categories
 
-,
 POIs are broken down into the following broad categories, in order to constrain the number of colors shown on the map. Some features may not cleanly fit into one category or another. Contributors should consider other POIs in the category to determine which category is the best fit.
 
 - **Geographic Place Names**: labels associated with `place=` tags, for countries, cities, locations, etc.
