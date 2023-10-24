@@ -3,7 +3,7 @@
 
 # Check if the right number of arguments are passed
 if [ "$#" -ne 3 ]; then
-    echo "Usage: $0 <folder1> <folder2> <url-base>"
+    echo "Usage: $0 <folder1> <folder2> <url-base> <sha>"
     exit 1
 fi
 
@@ -11,6 +11,9 @@ FOLDER1="$1"
 FOLDER2="$2"
 OUTPUT_FOLDER="samples-diff"
 URL_BASE="$3"
+
+# Ensure that image URLs are unique to this commit because GitHub caches identical URLs
+SHA="$4"
 
 # Create the output folder if it doesn't exist
 mkdir -p "$OUTPUT_FOLDER"
@@ -28,8 +31,8 @@ for file in "$FOLDER1"/*.png; do
         # If files are different ($? is the exit status of last command, 1 means different for cmp)
         if [ $? -eq 1 ]; then
             # Copy the files to the output folder with the appropriate naming scheme
-            cp "$FOLDER1/$basefile" "$OUTPUT_FOLDER/${basefile%.*}_before.png"
-            cp "$FOLDER2/$basefile" "$OUTPUT_FOLDER/${basefile%.*}_after.png"
+            cp "$FOLDER1/$basefile" "$OUTPUT_FOLDER/${basefile%.*}_${SHA}_before.png"
+            cp "$FOLDER2/$basefile" "$OUTPUT_FOLDER/${basefile%.*}_${SHA}_after.png"
         fi
     fi
 done
