@@ -2,7 +2,7 @@
 # Compare two folders of images and produce an .md file of differences
 
 # Check if the right number of arguments are passed
-if [ "$#" -ne 3 ]; then
+if [ "$#" -ne 4 ]; then
     echo "Usage: $0 <folder1> <folder2> <url-base> <sha>"
     exit 1
 fi
