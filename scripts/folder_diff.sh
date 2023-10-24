@@ -47,10 +47,10 @@ echo "|-------------|--------|-------|" >> $OUTPUT_MD
 # Loop through *_before.png files in the output folder
 for before_file in "$OUTPUT_FOLDER"/*_before.png; do
     # Extract just the base filename without the path and the '_before' suffix
-    basefile=$(basename "$before_file" _before.png)
+    basefile=$(basename "$before_file" _${SHA}_before.png)
     
     # Construct the path to the corresponding after file
-    after_file="$OUTPUT_FOLDER/${basefile}_after.png"
+    after_file="$OUTPUT_FOLDER/${basefile}_${SHA}_after.png"
     
     # Check if the after file exists
     if [ -e "$after_file" ]; then
