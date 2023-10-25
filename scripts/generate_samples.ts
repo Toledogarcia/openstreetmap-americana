@@ -52,6 +52,9 @@ const context = await browser.newContext();
 
 const page = await context.newPage();
 
+//Wait to load fonts
+await page.evaluate (() => document.fonts.ready);
+
 for (const screenshot of screenshots) {
   await page.setViewportSize(screenshot.viewport);
   await createImage(screenshot);
