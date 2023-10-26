@@ -52,9 +52,6 @@ const context = await browser.newContext();
 
 const page = await context.newPage();
 
-//Wait to load fonts
-await page.evaluate (() => document.fonts.ready);
-
 for (const screenshot of screenshots) {
   await page.setViewportSize(screenshot.viewport);
   await createImage(screenshot);
@@ -66,6 +63,9 @@ async function createImage(screenshot: SampleSpecification) {
   await page.goto(
     `http://localhost:1776/${pagePath}#map=${screenshot.location}`
   );
+
+  //Wait to load fonts
+  await page.evaluate(() => document.fonts.ready);
 
   // Wait for map to load, then wait two more seconds for images, etc. to load.
   try {
