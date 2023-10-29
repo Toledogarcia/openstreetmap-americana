@@ -70,6 +70,12 @@ async function createImage(screenshot: SampleSpecification) {
   // Wait for map to load, then wait two more seconds for images, etc. to load.
   try {
     await page.waitForFunction(() => window.map?.loaded());
+
+    if(screenshot.controls) {
+      //Fade delay
+      await delay(500);
+    }
+
   } catch (e) {
     console.log(`Timed out waiting for map load`);
   }
@@ -83,6 +89,10 @@ async function createImage(screenshot: SampleSpecification) {
   } catch (err) {
     console.error(err);
   }
+}
+
+function delay(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 await browser.close();
