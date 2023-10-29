@@ -43,7 +43,7 @@ const screenshots: SampleSpecification[] =
 fs.mkdirSync(sampleFolder, { recursive: true });
 
 const browser = await chromium.launch({
-  headless: false,
+  headless: true,
   executablePath: process.env.CHROME_BIN,
   args: ["--disable-web-security"],
 });
