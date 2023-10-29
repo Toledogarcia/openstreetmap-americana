@@ -65,13 +65,11 @@ async function createImage(screenshot: SampleSpecification) {
   );
 
   //Wait to load fonts
-  await page.evaluate(() => document.fonts.ready);
+  await page.evaluate(() => document.fonts.ready.then(() => true));
 
   // Wait for map to load, then wait two more seconds for images, etc. to load.
   try {
-    await page.waitForFunction(() => window.map?.loaded(), {
-      timeout: 3000,
-    });
+    await page.waitForFunction(() => window.map?.loaded());
   } catch (e) {
     console.log(`Timed out waiting for map load`);
   }
