@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import { chromium } from "@playwright/test";
 import type * as maplibre from "maplibre-gl";
+import { setTimeout as delay } from "node:timers/promises";
 
 // Declare a global augmentation for the Window interface
 declare global {
@@ -90,7 +91,7 @@ async function createImage(screenshot: SampleSpecification) {
   }
 }
 
-import { setTimeout as delay } from "node:timers/promises";
+function delay(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
