@@ -90,7 +90,7 @@ async function createImage(screenshot: SampleSpecification) {
   }
 }
 
-function delay(ms: number): Promise<void> {
+import { setTimeout as delay } from "node:timers/promises";
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
