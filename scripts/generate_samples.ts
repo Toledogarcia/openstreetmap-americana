@@ -1,7 +1,6 @@
 import fs from "node:fs";
 import { chromium } from "@playwright/test";
 import type * as maplibre from "maplibre-gl";
-import { setTimeout as delay } from "node:timers/promises";
 
 // Declare a global augmentation for the Window interface
 declare global {
@@ -80,12 +79,6 @@ async function createImage(screenshot: SampleSpecification) {
     await page.waitForFunction(() => (window as WindowWithMap).map?.loaded(), {
       timeout: 3000,
     });
-
-    if (screenshot.controls) {
-      //Fade delay
-      await delay(500);
-    }
-
   } catch (e) {
     console.log(`Timed out waiting for map load`);
   }
