@@ -5,7 +5,7 @@ import { setTimeout as delay } from "node:timers/promises";
 
 // Declare a global augmentation for the Window interface
 declare global {
-  interface Window {
+  interface WindowWithMap extends Window {
     map?: maplibre.Map;
   }
 }
@@ -44,12 +44,14 @@ const screenshots: SampleSpecification[] =
 fs.mkdirSync(sampleFolder, { recursive: true });
 
 const browser = await chromium.launch({
-  headless: true,
   executablePath: process.env.CHROME_BIN,
-  args: ["--disable-web-security"],
+  args: ["--headless=new"]
 });
-
-const context = await browser.newContext();
+const context = await browser.newContext({
+  bypassCSP: true,
+  userAgent:
+    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36",
+});
 
 const page = await context.newPage();
 
@@ -65,17 +67,25 @@ async function createImage(screenshot: SampleSpecification) {
     `http://localhost:1776/${pagePath}#map=${screenshot.location}`
   );
 
-  //Wait to load fonts
-  await page.evaluate(() => document.fonts.ready.then(() => true));
+  // Wait until all fonts are loaded
+  await page.waitForFunction(() => {
+    const fontFaceSet: FontFaceSet = document.fonts;
+    return Array.from(fontFaceSet.values()).every(
+      (font) => font.status !== "unloaded"
+    );
+  });
 
   // Wait for map to load, then wait two more seconds for images, etc. to load.
   try {
-    await page.waitForFunction(() => window.map?.loaded());
+    await page.waitForFunction(() => (window as WindowWithMap).map?.loaded(), {
+      timeout: 3000,
+    });
 
     if (screenshot.controls) {
       //Fade delay
       await delay(500);
     }
+
   } catch (e) {
     console.log(`Timed out waiting for map load`);
   }
@@ -89,10 +99,6 @@ async function createImage(screenshot: SampleSpecification) {
   } catch (err) {
     console.error(err);
   }
-}
-
-function delay(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 await browser.close();
